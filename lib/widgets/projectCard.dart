@@ -8,7 +8,8 @@ class ProjectCard extends StatelessWidget {
       @required this.projectList,
       @required this.projectCode,
       this.projectHours,
-      this.projectMinutes});
+      this.projectMinutes,
+      this.onPress});
 
   final IconData icon;
   final Color colour;
@@ -18,48 +19,53 @@ class ProjectCard extends StatelessWidget {
   final int projectHours;
   final int projectMinutes;
 
+  final Function onPress;
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(5.0), color: Colors.deepPurple),
-      height: 100,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Expanded(
-            flex: 5,
-            child: Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    projectList,
-                    style: kProjectName,
-                  ),
-                  SizedBox(
-                    height: 2.0,
-                  ),
-                  Text(projectCode),
-                  Text(
-                      'You worked: $projectHours hours and $projectMinutes minutes today.')
-                ],
+    return GestureDetector(
+      onTap: onPress,
+      child: Container(
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(5.0), color: Colors.deepPurple),
+        height: 100,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Expanded(
+              flex: 5,
+              child: Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      projectList,
+                      style: kProjectName,
+                    ),
+                    SizedBox(
+                      height: 2.0,
+                    ),
+                    Text(projectCode),
+                    Text(
+                        'You worked: $projectHours hours and $projectMinutes minutes today.')
+                  ],
+                ),
               ),
             ),
-          ),
-          Expanded(
-            flex: 1,
-            //TODO: Modiify the icon color depending on if it is active project or not
-            child: CircleAvatar(
-              backgroundColor: Colors.green,
-              child: Icon(
-                icon,
-                color: colour,
+            Expanded(
+              flex: 1,
+              //TODO: Modiify the icon color depending on if it is active project or not
+              child: CircleAvatar(
+                backgroundColor: Colors.red,
+                child: Icon(
+                  icon,
+                  color: colour,
+                ),
               ),
-            ),
-          )
-        ],
+            )
+          ],
+        ),
       ),
     );
   }

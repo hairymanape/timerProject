@@ -11,14 +11,16 @@ class Project {
 }
 
 class ProjectListView extends StatelessWidget {
-  final int itemCount = 6;
+  final bool isActive = false;
+
+  final int itemCount = 1;
   final List projectList = [
-    Project('PROJECT1 CAPEX', 12300, 1, 2),
-    Project('PROJECT1 OPEX', 1231230, 4, 5),
-    Project('PROJECT2 CAPEX', 135300, 1, 2),
-    Project('PROJECT2 OPEX', 166300, 6, 3),
-    Project('JSON IS COOL', 1890, 8, 10),
-    Project('JCOB IS COOL', 12690, 6, 22),
+    Project('PROJECT 1 CAPEX', 12300, 1, 2),
+    Project('PROJECT 1 OPEX', 1231230, 4, 5),
+    Project('PROJECT 2 CAPEX', 135300, 1, 2),
+    Project('PROJECT 2 OPEX', 166300, 6, 3),
+    Project('PROJECT 3 CAPEX', 1890, 8, 10),
+    Project('PROJECT 4 OPEX', 12690, 6, 22),
   ];
   @override
   Widget build(BuildContext context) {
@@ -34,6 +36,9 @@ class ProjectListView extends StatelessWidget {
           projectCode: 'Project Number:' + projectList[index].code.toString(),
           projectHours: projectList[index].hours,
           projectMinutes: projectList[index].minutes,
+          onPress: () {
+            print('hello');
+          },
         );
       },
       separatorBuilder: (BuildContext context, int index) => const Divider(),
