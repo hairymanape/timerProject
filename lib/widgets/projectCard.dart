@@ -2,16 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:timer/constants.dart';
 
 class ProjectCard extends StatelessWidget {
-  ProjectCard(
-      {@required this.icon,
-      @required this.cardColour,
-      this.projectList,
-      this.projectCode,
-      @required this.iconColour,
-      @required this.textColour,
-      this.projectHours,
-      this.projectMinutes,
-      this.onPress});
+  ProjectCard({
+    @required this.icon,
+    @required this.cardColour,
+    this.projectList,
+    this.projectCode,
+    @required this.iconColour,
+    @required this.textColour,
+    this.projectHours,
+    this.projectMinutes,
+    this.onPress,
+  });
 
   final IconData icon;
   final Color cardColour;
@@ -62,10 +63,10 @@ class ProjectCard extends StatelessWidget {
             flex: 1,
             //TODO: Modiify the icon color depending on if it is active project or not
             child: CircleAvatar(
-              backgroundColor: Colors.red,
+              backgroundColor: iconColour,
               child: Icon(
                 icon,
-                color: iconColour,
+                color: Colors.white,
               ),
             ),
           )
