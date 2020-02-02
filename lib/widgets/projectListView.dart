@@ -38,6 +38,8 @@ class _ProjectListViewState extends State<ProjectListView> {
           onTap: () {
             setState(() {
               isActive = true;
+
+              print('You tapped: ${projectList[index].name}');
             });
           },
           child: ProjectCard(
