@@ -21,6 +21,7 @@ class ProjectListView extends StatefulWidget
 
 class _ProjectListViewState extends State<ProjectListView>
 {
+    /* I have left this for now as this is basically the same thought - maybe you could reimplement my changes with your own property! */
     int _currentPosition;
     int _selectedIndex;
     final int itemCount = 1;
