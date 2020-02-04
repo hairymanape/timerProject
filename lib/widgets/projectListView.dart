@@ -7,7 +7,7 @@ class Project {
   int code;
   int hours;
   int minutes;
-
+  bool isSelected = false;
   Project(this.name, this.code, this.hours, this.minutes);
 }
 
@@ -17,8 +17,7 @@ class ProjectListView extends StatefulWidget {
 }
 
 class _ProjectListViewState extends State<ProjectListView> {
-  int currentPosition;
-  bool isActive = false;
+  int _currentPosition;
   final int itemCount = 1;
   final List projectList = [
     Project('PROJECT 1 CAPEX', 12300, 1, 2),
@@ -36,22 +35,31 @@ class _ProjectListViewState extends State<ProjectListView> {
       itemBuilder: (BuildContext context, int index) {
         return GestureDetector(
           onTap: () {
-            setState(() {
-              //TODO: figure out how to access the index value and set the current Position to that value.
-              print('You tapped: ${projectList[index].name}');
-              print(projectList.map((val) {
-                String idx = projectList.indexOf(val).toString();
-                return idx;
-              }));
-              print(projectList.indexOf('PROJECT 1 CAPEX'));
-            });
+            // if projectList.any item is selected then disable
+            if (projectList[index].isSelected == false) {
+              setState(() {
+                _currentPosition = index;
+                print(_currentPosition);
+                projectList[index].isSelected = true;
+                print(projectList[index].isSelected);
+              });
+            } else if (projectList[index].isSelected == true) {
+              setState(() {
+                projectList[index].isSelected = false;
+                print(projectList[index].isSelected);
+              });
+            }
           },
           child: ProjectCard(
-            //TODO: Modiify the icon depending on if it is active project or not
-            icon: Icons.sync_disabled,
-            cardColour: kInactiveCardColour,
+            icon: projectList[index].isSelected
+                ? Icons.check
+                : Icons.sync_disabled,
+            cardColour: projectList[index].isSelected
+                ? kActiveCardColour
+                : kInactiveCardColour,
             textColour: kInactiveTextColour,
-            iconColour: Colors.green,
+            iconColour:
+                projectList[index].isSelected ? Colors.green : Colors.red,
             projectList: projectList[index].name,
             projectCode: 'Project Number:' + projectList[index].code.toString(),
             projectHours: projectList[index].hours,
@@ -65,10 +73,8 @@ class _ProjectListViewState extends State<ProjectListView> {
 }
 
 /*
-icon: projectList[index].isActive == true
-                ? Icons.check
-                : Icons.sync_disabled,
-            cardColour: projectList[index].isActive == true
+icon: 
+            cardColour: projectList[index].isSelected == true
                 ? kActiveCardColour
                 : kInactiveCardColour,
             textColour: kInactiveTextColour,
