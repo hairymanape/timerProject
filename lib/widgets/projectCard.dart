@@ -7,10 +7,9 @@ class ProjectCard extends StatelessWidget {
     @required this.cardColour,
     this.projectList,
     this.projectCode,
+    this.projectTime,
     @required this.iconColour,
     @required this.textColour,
-    this.projectHours,
-    this.projectMinutes,
     this.onPress,
   });
 
@@ -21,8 +20,7 @@ class ProjectCard extends StatelessWidget {
 
   final String projectList;
   final String projectCode;
-  final int projectHours;
-  final int projectMinutes;
+  final String projectTime;
 
   final Function onPress;
 
@@ -53,8 +51,7 @@ class ProjectCard extends StatelessWidget {
                     projectCode,
                     style: TextStyle(color: kInactiveTextColour),
                   ),
-                  Text(
-                      'You worked: $projectHours hours and $projectMinutes minutes today.')
+                  Text('You worked: $projectTime.')
                 ],
               ),
             ),
