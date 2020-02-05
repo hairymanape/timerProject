@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:timer/constants.dart';
 import 'projectCard.dart';
-import 'package:quiver/time.dart';
 
 class Project {
   String name;
