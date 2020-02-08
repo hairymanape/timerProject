@@ -1,16 +1,7 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:timer/constants.dart';
 import 'projectCard.dart';
-
-class Project {
-  String name;
-  int code;
-  int time;
-
-  Project(this.name, this.code, this.time);
-}
+import 'package:timer/brain/timing.dart';
 
 class ProjectListView extends StatefulWidget {
   @override
@@ -20,12 +11,9 @@ class ProjectListView extends StatefulWidget {
 class _ProjectListViewState extends State<ProjectListView> {
   int _selectedIndex;
 
-  bool startIsPressed = true;
-  bool stopIsPressed = false;
-  bool resetIsPressed = false;
   //TODO: configure a time that starts only for the specific projectCard selected and not the other ones
-  /* The following stuff is my stopWatch code*/
-  String stopTimeToDisplay = "00:00:00";
+  /* The following stuff is my stopWatch code
+  String stopTimeToDisplay = "___";
 
   var swatch = Stopwatch();
   final dur = const Duration(seconds: 1);
@@ -39,11 +27,7 @@ class _ProjectListViewState extends State<ProjectListView> {
       startTimer();
     }
     setState(() {
-      stopTimeToDisplay = swatch.elapsed.inHours.toString().padLeft(2, "0") +
-          ":" +
-          (swatch.elapsed.inMinutes % 60).toString().padLeft(2, "0") +
-          ":" +
-          (swatch.elapsed.inSeconds % 60).toString().padLeft(2, "0");
+      stopTimeToDisplay = (swatch.elapsed.inSeconds).toString().padLeft(2, "0");
     });
   }
 
@@ -55,7 +39,7 @@ class _ProjectListViewState extends State<ProjectListView> {
   void stopStopWatch() {
     swatch.stop();
   }
-
+*/
   final int itemCount = 1;
   final List projectList = [
     Project('PROJECT 1 CAPEX', 12300, 1),
@@ -65,9 +49,6 @@ class _ProjectListViewState extends State<ProjectListView> {
     Project('PROJECT 3 CAPEX', 1890, 8),
     Project('PROJECT 4 OPEX', 12690, 6),
   ];
-  Widget stopwatch() {
-    return Container();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -82,9 +63,9 @@ class _ProjectListViewState extends State<ProjectListView> {
               /* Instead of us setting this one to selected (enabling more than one to be selected), lets just set one index to be selected */
               _selectedIndex = index;
               if (_selectedIndex == index) {
-                startStopWatch();
+                TimerBrain();
               } else if (_selectedIndex != index) {
-                stopStopWatch();
+                TimerBrain();
               }
             });
             /* Dont need this else conditional anymore! */
@@ -103,7 +84,7 @@ class _ProjectListViewState extends State<ProjectListView> {
             projectList: projectList[index].name,
             projectCode: 'Project Number:' + projectList[index].code.toString(),
             projectTime: _selectedIndex == index
-                ? stopTimeToDisplay
+                ? TimerBrain().toString()
                 : 'you guys are cool',
           ),
         );
