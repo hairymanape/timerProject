@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:timer/brain/timing.dart';
 import 'package:timer/constants.dart';
 
-class ProjectCard extends StatelessWidget {
+/******************************* COMMENT FOR MATT *******************************/
+/// I changed this from being a stateless widget to a stateful widget
+/// It is easier to manage an individual timer per project card than to manage a list with the way changeNotifiers work - see the timer class
+
+class ProjectCard extends StatefulWidget {
   ProjectCard({
     @required this.icon,
     @required this.cardColour,
@@ -10,6 +15,7 @@ class ProjectCard extends StatelessWidget {
     this.projectTime,
     @required this.iconColour,
     @required this.textColour,
+    @required this.active,
     this.onPress,
   });
 
@@ -20,15 +26,44 @@ class ProjectCard extends StatelessWidget {
 
   final String projectList;
   final String projectCode;
-  final String projectTime;
+
+  // I changed this to be an int so that it can be appended to the timer (simulating project being previously worked on etc)
+  final int projectTime;
+
+  // I added a flag that tells this card whether or not it is currently active.
+  // We can use this to decide whether or not the timer should start/stop
+  final bool active;
 
   final Function onPress;
 
   @override
+  _ProjectCardState createState() => _ProjectCardState();
+}
+
+class _ProjectCardState extends State<ProjectCard> {
+  TimerBrain _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    // Passing the amount of time previously worked on the project
+    _timer = TimerBrain(startCount: widget.projectTime);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _timer.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    // Starting and stopping the timer based on the active flag passed in from the listView
+    widget.active ? _timer.startStopWatch() : _timer.stopStopWatch();
+
     return Container(
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(5.0), color: cardColour),
+          borderRadius: BorderRadius.circular(5.0), color: widget.cardColour),
       height: 100,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -41,17 +76,24 @@ class ProjectCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    projectList,
+                    widget.projectList,
                     style: kProjectName,
                   ),
                   SizedBox(
                     height: 2.0,
                   ),
                   Text(
-                    projectCode,
+                    widget.projectCode,
                     style: TextStyle(color: kInactiveTextColour),
                   ),
-                  Text('You worked: $projectTime.')
+                  // The animated builder here listens to changes from the timer - you will notice that every tick on the timer triggers a 'notifyListeners' call - this is the listener
+                  // Placing the animated builder here means that only the Text widget below it will be re-rendered
+                  AnimatedBuilder(
+                    animation: _timer,
+                    builder: (context, child) {
+                      return Text('You worked: ${_timer.stopTimeToDisplay}');
+                    },
+                  ),
                 ],
               ),
             ),
@@ -60,9 +102,9 @@ class ProjectCard extends StatelessWidget {
             flex: 1,
             //TODO: Modiify the icon color depending on if it is active project or not
             child: CircleAvatar(
-              backgroundColor: iconColour,
+              backgroundColor: widget.iconColour,
               child: Icon(
-                icon,
+                widget.icon,
                 color: Colors.white,
               ),
             ),
