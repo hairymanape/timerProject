@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:timer/brain/timing.dart';
-import 'package:timer/constants.dart';
+import 'package:timer/constants/constants.dart';
 
 /******************************* COMMENT FOR MATT *******************************/
 /// I changed this from being a stateless widget to a stateful widget

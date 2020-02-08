@@ -1,15 +1,13 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 
-
 /******************************* COMMENT FOR MATT *******************************/
 /// I changed this from being a widget to a plain dart class.
 /// It doesn't need to display itself and it was easier this way :p
 
-
 class TimerBrain extends ChangeNotifier {
   int elapsedMilliseconds;
-  String stopTimeToDisplay = "_";
+  String stopTimeToDisplay = "00:00:00";
 
   bool _isRunning = false;
   final Stopwatch _stopwatch = Stopwatch();
@@ -28,10 +26,14 @@ class TimerBrain extends ChangeNotifier {
     }
   }
 
+  //Have modified the following to convert seconds into hh:mm:ss
   _setTimeToDisplay() {
-    // Add the startCount to the elapsed time
     stopTimeToDisplay =
-        (_stopwatch.elapsed.inSeconds + startCount).toString().padLeft(2, "0");
+        (_stopwatch.elapsed.inHours).toString().padLeft(2, "0") +
+            (":") +
+            (_stopwatch.elapsed.inMinutes % 60).toString().padLeft(2, "0") +
+            (":") +
+            (_stopwatch.elapsed.inSeconds % 60).toString().padLeft(2, "0");
   }
 
   void startTimer() {
@@ -49,7 +51,6 @@ class TimerBrain extends ChangeNotifier {
   }
 
   void startStopWatch() {
-
     // this likely isn't required but is just an extra check to avoid calling start if it is already started
     if (_isRunning) {
       return;

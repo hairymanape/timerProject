@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:timer/constants.dart';
+import 'package:timer/constants/constants.dart';
 import 'package:timer/project/project.dart';
 import 'projectCard.dart';
 
@@ -12,12 +12,12 @@ class _ProjectListViewState extends State<ProjectListView> {
   int _selectedIndex;
   final int itemCount = 1;
   final List projectList = [
-    Project('PROJECT 1 CAPEX', 12300, 1),
-    Project('PROJECT 1 OPEX', 1231230, 4),
+    Project('PROJECT 1 CAPEX', 12300, 0),
+    Project('PROJECT 1 OPEX', 1231230, 0),
     Project('PROJECT 2 CAPEX', 135300, 0),
-    Project('PROJECT 2 OPEX', 166300, 1),
-    Project('PROJECT 3 CAPEX', 1890, 8),
-    Project('PROJECT 4 OPEX', 12690, 6),
+    Project('PROJECT 2 OPEX', 166300, 0),
+    Project('PROJECT 3 CAPEX', 1890, 58),
+    Project('PROJECT 4 OPEX', 12690, 0),
   ];
 
   onProjectTap(int index) {
@@ -36,6 +36,7 @@ class _ProjectListViewState extends State<ProjectListView> {
       itemCount: projectList.length,
       itemBuilder: (BuildContext context, int index) {
         return GestureDetector(
+            //TODO: implement switch to allow for a disabling of a task
             onTap: () => onProjectTap(index),
             child: Container(
               key: ValueKey(index),
@@ -65,14 +66,3 @@ class _ProjectListViewState extends State<ProjectListView> {
     );
   }
 }
-
-/*
-icon: 
-            cardColour: projectList[index].isSelected == true
-                ? kActiveCardColour
-                : kInactiveCardColour,
-            textColour: kInactiveTextColour,
-            iconColour: projectList[index].isActive == true
-                ? Colors.green
-                : kInactiveCardColour,
-*/
