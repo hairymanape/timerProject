@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:timer/widgets/projectListView.dart';
+import 'package:timer/project/project.dart';
+import 'package:timer/widgets/projectCard.dart';
 
 class ListViewPage extends StatefulWidget {
   @override
@@ -29,15 +31,19 @@ class _ListViewPageState extends State<ListViewPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-                Container(
-                    padding: EdgeInsets.all(8),
-                    margin: EdgeInsets.all(8),
-                    decoration: new BoxDecoration(
-                        color: Color(0Xff444444),
-                        borderRadius: BorderRadius.circular(10.0)),
-                    height: 500,
-                    child: ProjectListView()),
                 Expanded(
+                  flex: 6,
+                  child: Container(
+                      padding: EdgeInsets.all(8),
+                      margin: EdgeInsets.all(8),
+                      decoration: new BoxDecoration(
+                          color: Color(0Xff444444),
+                          borderRadius: BorderRadius.circular(10.0)),
+                      height: 600,
+                      child: ProjectListView()),
+                ),
+                Expanded(
+                  flex: 1,
                   child: Container(
                     width: 600,
                     padding: EdgeInsets.all(8),
@@ -45,9 +51,7 @@ class _ListViewPageState extends State<ListViewPage> {
                     decoration: new BoxDecoration(
                         color: Color(0Xff444444),
                         borderRadius: BorderRadius.circular(10.0)),
-                    child: Text(
-                      'Current active project is: ',
-                    ),
+                    child: Text('hi'),
                   ),
                 ),
               ],

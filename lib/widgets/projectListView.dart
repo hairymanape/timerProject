@@ -1,7 +1,10 @@
+import 'dart:io';
+import 'dart:convert';
+import 'package:path_provider/path_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:timer/constants/constants.dart';
 import 'package:timer/project/project.dart';
-import 'projectCard.dart';
+import 'package:timer/widgets/projectCard.dart';
 
 class ProjectListView extends StatefulWidget {
   @override
@@ -16,7 +19,7 @@ class _ProjectListViewState extends State<ProjectListView> {
     Project('PROJECT 1 OPEX', 1231230, 0),
     Project('PROJECT 2 CAPEX', 135300, 0),
     Project('PROJECT 2 OPEX', 166300, 0),
-    Project('PROJECT 3 CAPEX', 1890, 58),
+    Project('PROJECT 3 CAPEX', 1890, 0),
     Project('PROJECT 4 OPEX', 12690, 0),
   ];
 
@@ -28,6 +31,35 @@ class _ProjectListViewState extends State<ProjectListView> {
       });
     }
   }
+
+  File jsonFile;
+  Directory dir;
+  String fileName = "myJsonFile.json";
+  bool fileExists = false;
+  Map<String, dynamic> fileContent;
+
+  @override
+  void initState() {
+    super.initState();
+    getApplicationDocumentsDirectory().then((Directory directory) {
+      dir = directory;
+      jsonFile = new File(dir.path + "/" + fileName);
+      fileExists = jsonFile.existsSync();
+      if (fileExists)
+        this.setState(
+            () => fileContent = json.decode(jsonFile.readAsStringSync()));
+    });
+    print("hey");
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  File createFile(Map<String, dynamic> content) {}
+
+  void writeToFile(String key, dynamic value) {}
 
   @override
   Widget build(BuildContext context) {
@@ -65,4 +97,9 @@ class _ProjectListViewState extends State<ProjectListView> {
       separatorBuilder: (BuildContext context, int index) => const Divider(),
     );
   }
+}
+
+class FileSaver {
+  //attempting to add json storage
+
 }

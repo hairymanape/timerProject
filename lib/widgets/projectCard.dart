@@ -10,12 +10,12 @@ class ProjectCard extends StatefulWidget {
   ProjectCard({
     @required this.icon,
     @required this.cardColour,
-    this.projectList,
-    this.projectCode,
-    this.projectTime,
     @required this.iconColour,
     @required this.textColour,
     @required this.active,
+    this.projectList,
+    this.projectCode,
+    this.projectTime,
     this.onPress,
   });
 
