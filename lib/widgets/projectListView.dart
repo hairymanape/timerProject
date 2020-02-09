@@ -14,6 +14,51 @@ class ProjectListView extends StatefulWidget {
 }
 
 class _ProjectListViewState extends State<ProjectListView> {
+  //Attempting Shared preferences here //
+  // currently using boiler plate crap and will try work it in//
+
+  /*@override
+  void initState() {
+    super.initState();
+    _incrementStartup();
+  }*/
+
+  String _haveStarted3Times = '';
+  String stopTimeToDisplay2 = "00:00:00";
+  Future<int> _getIntFromSharedPref() async {
+    final prefs = await SharedPreferences.getInstance();
+    final timer = prefs.getInt('timerValue');
+    if (timer == null) {
+      return 0;
+    }
+    return timer;
+  }
+
+  Future<void> _resetTimer() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('timerValue', 0);
+  }
+
+  Future<void> _incrementStartup() async {
+    final prefs = await SharedPreferences.getInstance();
+    int lastStartupNumber = await _getIntFromSharedPref();
+    int currentStartupNumber = ++lastStartupNumber;
+
+    await prefs.setInt('startupNumber', currentStartupNumber);
+
+    if (currentStartupNumber == 3) {
+      setState(() {
+        _haveStarted3Times = '$currentStartupNumber Times Completed';
+      });
+      await _resetTimer();
+    } else {
+      setState(() {
+        _haveStarted3Times = '$currentStartupNumber Times Started the app';
+      });
+    }
+  }
+
+  // Shared preferences finished!//
   Project project;
   TimerBrain _timer;
   int _selectedIndex;
@@ -112,7 +157,9 @@ class _ProjectListViewState extends State<ProjectListView> {
       itemBuilder: (BuildContext context, int index) {
         return GestureDetector(
             //TODO: implement switch to allow for a disabling of a task
-            onTap: () => onProjectTap(index),
+            onTap: () {
+              onProjectTap(index);
+            },
             onLongPress: () {
               print(projectList[index].name + " got long pressed");
               keyInputController = projectList[index].code.toString();
@@ -121,7 +168,12 @@ class _ProjectListViewState extends State<ProjectListView> {
               writeToFile(keyInputController, valueInputController);
 
               final snackBar = SnackBar(
-                content: Text('$fileContent'),
+                content: Text(
+                  'The current json file is as follows: \n'
+                  '$fileContent',
+                  style: TextStyle(color: Colors.white),
+                ),
+                backgroundColor: kActiveCardColour,
                 /*ction: SnackBarAction(
                   label: 'Undo',
                   onPressed: () {},
@@ -136,8 +188,8 @@ class _ProjectListViewState extends State<ProjectListView> {
               key: ValueKey(index),
               child: ProjectCard(
                   // Added this so the project card can start/stop timer
-                  // You could also move the color,icon etc logic to the projectCard based on this flag if you like
-                  active: _selectedIndex == index,
+                  //TODO:  move the color,icon etc logic to the projectCard based on this flag if you like
+                  active: _selectedIndex == index ? true : false,
                   /* Lets select the icon based on the selectedIndex instead */
                   icon: _selectedIndex == index
                       ? Icons.check

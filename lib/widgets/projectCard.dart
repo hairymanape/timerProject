@@ -60,9 +60,8 @@ class _ProjectCardState extends State<ProjectCard> {
     _timer.dispose();
   }
 
-  _onTimeUpdate()
-  {
-    widget.onTimeUpdate(widget.projectCode,_timer.elapsedMilliseconds);
+  _onTimeUpdate() {
+    widget.onTimeUpdate(widget.projectCode, _timer.elapsedMilliseconds);
   }
 
   @override
@@ -100,7 +99,6 @@ class _ProjectCardState extends State<ProjectCard> {
                   AnimatedBuilder(
                     animation: _timer,
                     builder: (context, child) {
-
                       return Text('You worked: ${_timer.stopTimeToDisplay}');
                     },
                   ),

@@ -6,7 +6,10 @@ import 'package:flutter/material.dart';
 /// It doesn't need to display itself and it was easier this way :p
 
 class TimerBrain extends ChangeNotifier {
+  dynamic fileContent;
+  Map<String, dynamic> fileContent2;
   int elapsedMilliseconds;
+
   String stopTimeToDisplay = "00:00:00";
 
   bool _isRunning = false;
@@ -73,3 +76,22 @@ class TimerBrain extends ChangeNotifier {
     super.dispose();
   }
 }
+//Thinking about how I access the value that will show my time value so that I dont lose it every time I forceclose the app
+/*class TimeValue {
+  String projectCode;
+  int time;
+
+  TimeValue({this.projectCode, this.time});
+
+  factory TimeValue.fromJson(Map<String, dynamic> parsedJson) {
+    return TimeValue(
+      projectCode: parsedJson['id'],
+      time: parsedJson['time'],
+    );
+  }
+}
+
+Future<String> _loadAProjectAsset() async {
+  return await rootBundle.loadString('${ProjectListView}');
+}
+*/
