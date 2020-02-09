@@ -6,6 +6,7 @@ import 'package:timer/constants/constants.dart';
 import 'package:timer/project/project.dart';
 import 'package:timer/brain/timing.dart';
 import 'package:timer/widgets/projectCard.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProjectListView extends StatefulWidget {
   @override
@@ -13,6 +14,7 @@ class ProjectListView extends StatefulWidget {
 }
 
 class _ProjectListViewState extends State<ProjectListView> {
+  Project project;
   TimerBrain _timer;
   int _selectedIndex;
   final int itemCount = 1;
@@ -98,9 +100,9 @@ class _ProjectListViewState extends State<ProjectListView> {
             onTap: () => onProjectTap(index),
             onLongPress: () {
               print(projectList[index].name + " got long pressed");
-              keyInputController = projectList[index].name;
+              keyInputController = projectList[index].code.toString();
               //TODO: Fix this so that I can write the time value to the file
-              valueInputController = '${_timer.stopTimeToDisplay}';
+              valueInputController = projectList[index].name;
               writeToFile(keyInputController, valueInputController);
               print(fileContent);
             },
@@ -122,7 +124,7 @@ class _ProjectListViewState extends State<ProjectListView> {
                     /* Lets select the color based on the selectedIndex instead */
                     _selectedIndex == index ? Colors.green : Colors.red,
                 projectList: projectList[index].name,
-                projectCode: '123',
+                projectCode: projectList[index].code.toString(),
                 //'Project Number:' + projectList[index].code.toString(),
                 projectTime: projectList[index].time,
               ),
@@ -136,4 +138,11 @@ class _ProjectListViewState extends State<ProjectListView> {
 class FileSaver {
   //attempting to add json storage
 
+}
+
+_projectTimeStore() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  int counter = (prefs.getInt('counter') ?? 0) + 1;
+  print('Pressed $counter times.');
+  await prefs.setInt('counter', counter);
 }

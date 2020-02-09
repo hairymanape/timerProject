@@ -9,6 +9,8 @@ class ListViewPage extends StatefulWidget {
 }
 
 class _ListViewPageState extends State<ListViewPage> {
+  ProjectListView projectListView;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,7 +53,7 @@ class _ListViewPageState extends State<ListViewPage> {
                     decoration: new BoxDecoration(
                         color: Color(0Xff444444),
                         borderRadius: BorderRadius.circular(10.0)),
-                    child: Text('hi'),
+                    child: Text('{$projectListView[index].name}'),
                   ),
                 ),
               ],
