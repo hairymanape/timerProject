@@ -13,6 +13,7 @@ class ProjectCard extends StatefulWidget {
     @required this.iconColour,
     @required this.textColour,
     @required this.active,
+    @required this.onTimeUpdate,
     this.projectList,
     this.projectCode,
     this.projectTime,
@@ -35,6 +36,7 @@ class ProjectCard extends StatefulWidget {
   final bool active;
 
   final Function onPress;
+  final Function onTimeUpdate;
 
   @override
   _ProjectCardState createState() => _ProjectCardState();
@@ -48,12 +50,19 @@ class _ProjectCardState extends State<ProjectCard> {
     super.initState();
     // Passing the amount of time previously worked on the project
     _timer = TimerBrain(startCount: widget.projectTime);
+    _timer.addListener(_onTimeUpdate);
   }
 
   @override
   void dispose() {
     super.dispose();
+    _timer.removeListener(_onTimeUpdate);
     _timer.dispose();
+  }
+
+  _onTimeUpdate()
+  {
+    widget.onTimeUpdate(widget.projectCode,_timer.elapsedMilliseconds);
   }
 
   @override
@@ -91,6 +100,7 @@ class _ProjectCardState extends State<ProjectCard> {
                   AnimatedBuilder(
                     animation: _timer,
                     builder: (context, child) {
+
                       return Text('You worked: ${_timer.stopTimeToDisplay}');
                     },
                   ),

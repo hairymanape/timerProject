@@ -27,6 +27,22 @@ class _ProjectListViewState extends State<ProjectListView> {
     Project('PROJECT 4 OPEX', 12690, 0),
   ];
 
+  Map<String,int> projectTimers =
+  {
+    "12300":0,
+    "1231230":0,
+    "135300":0,
+    "166300":0,
+    "1890":0,
+    "12690":0,
+  };
+
+  onProjectTimerChange(projectId,time)
+  {
+   // print(projectId + " " + time);
+    projectTimers[projectId] = time;
+  }
+
   onProjectTap(int index) {
     // Added a check here to only setState if the index has changed to avoid re-rendering
     if (_selectedIndex != index) {
@@ -76,6 +92,7 @@ class _ProjectListViewState extends State<ProjectListView> {
   void writeToFile(String key, dynamic value) {
     print("writing to file!");
     Map<String, dynamic> content = {key: value};
+    int timer = projectTimers[key];
     if (fileExists) {
       print("File Exists");
       Map<String, dynamic> jsonFileContent =
@@ -127,6 +144,7 @@ class _ProjectListViewState extends State<ProjectListView> {
                 projectCode: projectList[index].code.toString(),
                 //'Project Number:' + projectList[index].code.toString(),
                 projectTime: projectList[index].time,
+                  onTimeUpdate:onProjectTimerChange
               ),
             ));
       },

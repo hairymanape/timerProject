@@ -45,7 +45,7 @@ class TimerBrain extends ChangeNotifier {
       startTimer();
     }
     _setTimeToDisplay();
-
+    elapsedMilliseconds = _stopwatch.elapsedMilliseconds;
     // This will notify any widgets who are using the timer that something has changed and that they need to re render
     notifyListeners();
   }
