@@ -27,19 +27,17 @@ class _ProjectListViewState extends State<ProjectListView> {
     Project('PROJECT 4 OPEX', 12690, 0),
   ];
 
-  Map<String,int> projectTimers =
-  {
-    "12300":0,
-    "1231230":0,
-    "135300":0,
-    "166300":0,
-    "1890":0,
-    "12690":0,
+  Map<String, int> projectTimers = {
+    "12300": 0,
+    "1231230": 0,
+    "135300": 0,
+    "166300": 0,
+    "1890": 0,
+    "12690": 0,
   };
 
-  onProjectTimerChange(projectId,time)
-  {
-   // print(projectId + " " + time);
+  onProjectTimerChange(projectId, time) {
+    //print(projectId + " " + time);
     projectTimers[projectId] = time;
   }
 
@@ -119,48 +117,47 @@ class _ProjectListViewState extends State<ProjectListView> {
               print(projectList[index].name + " got long pressed");
               keyInputController = projectList[index].code.toString();
               //TODO: Fix this so that I can write the time value to the file
-              valueInputController = projectList[index].name;
+              valueInputController = projectTimers[keyInputController];
               writeToFile(keyInputController, valueInputController);
-              print(fileContent);
+
+              final snackBar = SnackBar(
+                content: Text('$fileContent'),
+                /*ction: SnackBarAction(
+                  label: 'Undo',
+                  onPressed: () {},
+                ),*/
+              );
+
+              // Find the Scaffold in the widget tree and use
+              // it to show a SnackBar.
+              Scaffold.of(context).showSnackBar(snackBar);
             },
             child: Container(
               key: ValueKey(index),
               child: ProjectCard(
-                // Added this so the project card can start/stop timer
-                // You could also move the color,icon etc logic to the projectCard based on this flag if you like
-                active: _selectedIndex == index,
-                /* Lets select the icon based on the selectedIndex instead */
-                icon:
-                    _selectedIndex == index ? Icons.check : Icons.sync_disabled,
-                /* Lets select the color based on the selectedIndex instead */
-                cardColour: _selectedIndex == index
-                    ? kActiveCardColour
-                    : kInactiveCardColour,
-                textColour: kInactiveTextColour,
-                iconColour:
-                    /* Lets select the color based on the selectedIndex instead */
-                    _selectedIndex == index ? Colors.green : Colors.red,
-                projectList: projectList[index].name,
-                projectCode: projectList[index].code.toString(),
-                //'Project Number:' + projectList[index].code.toString(),
-                projectTime: projectList[index].time,
-                  onTimeUpdate:onProjectTimerChange
-              ),
+                  // Added this so the project card can start/stop timer
+                  // You could also move the color,icon etc logic to the projectCard based on this flag if you like
+                  active: _selectedIndex == index,
+                  /* Lets select the icon based on the selectedIndex instead */
+                  icon: _selectedIndex == index
+                      ? Icons.check
+                      : Icons.sync_disabled,
+                  /* Lets select the color based on the selectedIndex instead */
+                  cardColour: _selectedIndex == index
+                      ? kActiveCardColour
+                      : kInactiveCardColour,
+                  textColour: kInactiveTextColour,
+                  iconColour:
+                      /* Lets select the color based on the selectedIndex instead */
+                      _selectedIndex == index ? Colors.green : Colors.red,
+                  projectList: projectList[index].name,
+                  projectCode: projectList[index].code.toString(),
+                  //'Project Number:' + projectList[index].code.toString(),
+                  projectTime: projectList[index].time,
+                  onTimeUpdate: onProjectTimerChange),
             ));
       },
       separatorBuilder: (BuildContext context, int index) => const Divider(),
     );
   }
-}
-
-class FileSaver {
-  //attempting to add json storage
-
-}
-
-_projectTimeStore() async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  int counter = (prefs.getInt('counter') ?? 0) + 1;
-  print('Pressed $counter times.');
-  await prefs.setInt('counter', counter);
 }
