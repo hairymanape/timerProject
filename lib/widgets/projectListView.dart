@@ -4,6 +4,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:timer/constants/constants.dart';
 import 'package:timer/project/project.dart';
+import 'package:timer/brain/timing.dart';
 import 'package:timer/widgets/projectCard.dart';
 
 class ProjectListView extends StatefulWidget {
@@ -12,6 +13,7 @@ class ProjectListView extends StatefulWidget {
 }
 
 class _ProjectListViewState extends State<ProjectListView> {
+  TimerBrain _timer;
   int _selectedIndex;
   final int itemCount = 1;
   final List projectList = [
@@ -38,6 +40,9 @@ class _ProjectListViewState extends State<ProjectListView> {
   bool fileExists = false;
   Map<String, dynamic> fileContent;
 
+  String keyInputController;
+  dynamic valueInputController;
+
   @override
   void initState() {
     super.initState();
@@ -57,9 +62,30 @@ class _ProjectListViewState extends State<ProjectListView> {
     super.dispose();
   }
 
-  File createFile(Map<String, dynamic> content) {}
+  void createFile(
+      Map<String, dynamic> content, Directory dir, String fileName) {
+    print("creating file");
+    File file = new File(dir.path + "/" + fileName);
+    file.createSync();
+    fileExists = true;
+    file.writeAsStringSync(json.encode(content));
+  }
 
-  void writeToFile(String key, dynamic value) {}
+  void writeToFile(String key, dynamic value) {
+    print("writing to file!");
+    Map<String, dynamic> content = {key: value};
+    if (fileExists) {
+      print("File Exists");
+      Map<String, dynamic> jsonFileContent =
+          json.decode(jsonFile.readAsStringSync());
+      jsonFileContent.addAll(content);
+      jsonFile.writeAsStringSync(json.encode(jsonFileContent));
+    } else {
+      print("file does not exist!");
+      createFile(content, dir, fileName);
+    }
+    this.setState(() => fileContent = json.decode(jsonFile.readAsStringSync()));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,6 +96,14 @@ class _ProjectListViewState extends State<ProjectListView> {
         return GestureDetector(
             //TODO: implement switch to allow for a disabling of a task
             onTap: () => onProjectTap(index),
+            onLongPress: () {
+              print(projectList[index].name + " got long pressed");
+              keyInputController = projectList[index].name;
+              //TODO: Fix this so that I can write the time value to the file
+              valueInputController = '${_timer.stopTimeToDisplay}';
+              writeToFile(keyInputController, valueInputController);
+              print(fileContent);
+            },
             child: Container(
               key: ValueKey(index),
               child: ProjectCard(
@@ -88,8 +122,8 @@ class _ProjectListViewState extends State<ProjectListView> {
                     /* Lets select the color based on the selectedIndex instead */
                     _selectedIndex == index ? Colors.green : Colors.red,
                 projectList: projectList[index].name,
-                projectCode:
-                    'Project Number:' + projectList[index].code.toString(),
+                projectCode: '123',
+                //'Project Number:' + projectList[index].code.toString(),
                 projectTime: projectList[index].time,
               ),
             ));
