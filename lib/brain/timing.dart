@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:timer/widgets/projectListView.dart';
 
 /******************************* COMMENT FOR MATT *******************************/
 /// I changed this from being a widget to a plain dart class.
@@ -7,11 +8,11 @@ import 'package:flutter/material.dart';
 
 class TimerBrain extends ChangeNotifier {
   dynamic fileContent;
-  Map<String, dynamic> fileContent2;
+  Map<String, dynamic> projectTimers;
   int elapsedMilliseconds;
 
   String stopTimeToDisplay = "00:00:00";
-
+  //stopTimeToDisplay2 = projectTimers[keyInputController];
   bool _isRunning = false;
   final Stopwatch _stopwatch = Stopwatch();
   final dur = const Duration(seconds: 1);

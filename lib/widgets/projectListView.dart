@@ -72,7 +72,7 @@ class _ProjectListViewState extends State<ProjectListView> {
     Project('PROJECT 4 OPEX', 12690, 0),
   ];
 
-  Map<String, int> projectTimers = {
+  Map<String, dynamic> projectTimers = {
     "12300": 0,
     "1231230": 0,
     "135300": 0,
@@ -140,13 +140,19 @@ class _ProjectListViewState extends State<ProjectListView> {
       print("File Exists");
       Map<String, dynamic> jsonFileContent =
           json.decode(jsonFile.readAsStringSync());
+
       jsonFileContent.addAll(content);
+
       jsonFile.writeAsStringSync(json.encode(jsonFileContent));
     } else {
       print("file does not exist!");
       createFile(content, dir, fileName);
     }
     this.setState(() => fileContent = json.decode(jsonFile.readAsStringSync()));
+  }
+
+  readFromFile() {
+    return projectTimers[keyInputController].toString();
   }
 
   @override
@@ -166,11 +172,13 @@ class _ProjectListViewState extends State<ProjectListView> {
               //TODO: Fix this so that I can write the time value to the file
               valueInputController = projectTimers[keyInputController];
               writeToFile(keyInputController, valueInputController);
-
+              readFromFile();
+              //print('${_timer.stopTimeToDisplay[index]}');
               final snackBar = SnackBar(
                 content: Text(
-                  'The current json file is as follows: \n'
-                  '$fileContent',
+                  'The current json file is as follows: \n \n'
+                  'Location: ${dir.path + "/" + fileName} \n \n'
+                  'The file content is: $fileContent',
                   style: TextStyle(color: Colors.white),
                 ),
                 backgroundColor: kActiveCardColour,
